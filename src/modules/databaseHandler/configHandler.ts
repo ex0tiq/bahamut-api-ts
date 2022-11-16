@@ -10,7 +10,7 @@ export default class ConfigHandler {
         this._dbHandler = dbHandler;
     }
 
-    getDBGlobalConfig = async () => {
+    getDBGlobalConfig = async (): Promise<Map<string, string>> => {
         try {
             const settings = await DBGlobalConfig.findAll({
                 raw: true,
