@@ -1,8 +1,8 @@
 import logger from "../../Logger";
 import { BahamutAPIHandler } from "../../../index";
 import { getServerBootConfiguration } from "../../../lib/bootConfigurationFunctions";
-const { isUUID } = require("../../../lib/validateFunctions");
-const ShardingServer = require("../../classes/ShardingServer");
+import { isUUID } from "../../../lib/validateFunctions";
+import ShardingServer from "../../ShardingServer";
 
 export default (apiHandler: BahamutAPIHandler) => {
     apiHandler.apiHandler.srv.post("/srvHeartbeat", async (req, res) => {
@@ -52,7 +52,7 @@ export default (apiHandler: BahamutAPIHandler) => {
             logger.ready(`New server ${ip}:${req.body.port} online and registered (Latency: ${(Date.now() - req.body.currentTime)}ms).`);
         }
 
-        apiHandler.registeredShardingServers.set(req.query.registerToken, new ShardingServer(req.body, ip));
+        apiHandler.registeredShardingServers.set(req.query.registerToken, new ShardingServer(req.body, <string>ip!));
 
         if (req.body.requestBootConf) {
             res.end(JSON.stringify({
