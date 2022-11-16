@@ -46,6 +46,18 @@ export default class DBHandler {
     public get manager() {
         return this._apiManager;
     }
+    public get commandLog() {
+        return this._commandLog;
+    }
+    public get config() {
+        return this._config;
+    }
+    public get guildSettings() {
+        return this._guildSettings;
+    }
+    public get userStats() {
+        return this._userStat;
+    }
 
     /**
      * Init DB connection
