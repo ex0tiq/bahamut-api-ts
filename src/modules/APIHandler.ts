@@ -24,8 +24,8 @@ const defend = expressDefend.protect({
  * Class to handle all api requests
  */
 export default class APIHandler {
-    private _apiManager: BahamutAPIHandler;
-    private _srv;
+    private readonly _apiManager: BahamutAPIHandler;
+    private readonly _srv;
     private _listener: any;
     private _serverOfflineCheckerIntervalId: ReturnType<typeof setInterval> | undefined;
 
@@ -113,7 +113,7 @@ export default class APIHandler {
             this._listener = this._srv.listen(8068, () => {
                 logger.ready(`API is listening on port: ${this._listener.address().port}`);
 
-                this._apiManager.twitchHandler.startEventSubListener();
+                //this._apiManager.twitchHandler.startEventSubListener();
             });
         });
     }
@@ -134,9 +134,9 @@ export default class APIHandler {
         // Register all api handlers
         const handlerFiles = await recursive(`${__dirname}/apiHandlers/`);
         handlerFiles.forEach((file: string) => {
-            require(file)(this, this._apiManager);
+            //require(file)(this, this._apiManager);
         });
-        await this._apiManager.twitchHandler.registerTwitchEventSubListener(this._srv);
+        //await this._apiManager.twitchHandler.registerTwitchEventSubListener(this._srv);
 
         this._srv.get("*", (req, res) => {
             res.status(404);

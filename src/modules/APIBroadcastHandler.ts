@@ -1,7 +1,8 @@
 import axios from "axios";
-import { ManagedGuild, ShardingServer } from "../../typings";
-import { BahamutShardingBootManager } from "bahamutbot";
+import { ManagedGuild } from "../../typings";
 import { BahamutAPIHandler } from "../index";
+import ShardingServer from "./ShardingServer";
+import { BahamutShardingBootManager } from "bahamutbot";
 
 export default class APIBroadcastHandler {
     private _apiHandler: BahamutAPIHandler;
