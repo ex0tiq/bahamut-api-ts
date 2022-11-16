@@ -9,10 +9,10 @@ import {
     QueryTypes,
     Sequelize,
 } from "sequelize";
-import GuildSettingsHandler from "./apiHandlers/databaseHandler/guildSettingsHandler";
-import GuildUserStatHandler from "./apiHandlers/databaseHandler/guildUserStatHandler";
-import CommandLogHandler from "./apiHandlers/databaseHandler/commandLogHandler";
-import ConfigHandler from "./apiHandlers/databaseHandler/configHandler";
+import GuildSettingsHandler from "./databaseHandler/guildSettingsHandler";
+import GuildUserStatHandler from "./databaseHandler/guildUserStatHandler";
+import CommandLogHandler from "./databaseHandler/commandLogHandler";
+import ConfigHandler from "./databaseHandler/configHandler";
 
 export default class DBHandler {
     private _apiManager: BahamutAPIHandler;

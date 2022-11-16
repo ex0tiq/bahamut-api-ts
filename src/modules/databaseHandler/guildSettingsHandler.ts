@@ -1,6 +1,6 @@
-import { isInt, isJson } from "../../../lib/validateFunctions";
-import { parseBool } from "../../../lib/parseFunctions";
-import DBHandler, { DBGuildSettings } from "../../DBHandler";
+import { isInt, isJson } from "../../lib/validateFunctions";
+import { parseBool } from "../../lib/parseFunctions";
+import DBHandler, { DBGuildSettings } from "../DBHandler";
 
 export default class GuildSettingsHandler {
     // DB Handler instance

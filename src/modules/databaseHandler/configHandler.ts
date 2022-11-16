@@ -1,6 +1,6 @@
-import DBHandler, { DBGlobalConfig, DBServerConfig } from "../../DBHandler";
-import { isInt, isJson } from "../../../lib/validateFunctions";
-import { parseBool } from "../../../lib/parseFunctions";
+import DBHandler, { DBGlobalConfig, DBServerConfig } from "../DBHandler";
+import { isInt, isJson } from "../../lib/validateFunctions";
+import { parseBool } from "../../lib/parseFunctions";
 
 export default class ConfigHandler {
 // DB Handler instance

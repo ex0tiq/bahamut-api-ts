@@ -1,5 +1,5 @@
 import { Op, WhereOptions } from "sequelize";
-import DBHandler, { DBGuildCommandLog } from "../../DBHandler";
+import DBHandler, { DBGuildCommandLog } from "../DBHandler";
 import { DateTime } from "luxon";
 
 export default class CommandLogHandler {
