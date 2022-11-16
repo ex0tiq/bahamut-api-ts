@@ -51,3 +51,37 @@ export interface ManagedShard {
     time: number;
 }
 
+export interface GlobalConfig {
+    admins: string[];
+    avatar_link: string;
+    cookie_images: any;
+    emoji_icons: any;
+    error_message_color: string;
+    ffxiv_settings: any;
+    game_icons: any;
+    genius_token: string;
+    invite_link: string;
+    job_emoji_list: any;
+    lavalink_settings: any;
+    level_up_images: any;
+    message_icons: any;
+    owner_id: string;
+    patreon_link: string;
+    premium_settings: any;
+    primary_message_color: string;
+    prod_token: string;
+    reddit: string;
+    spotify_client_id: string;
+    spotify_client_secret: string;
+    statcord_prod_token: string;
+    statcord_test_token: string;
+    status_emojis: any;
+    stuff_icons: any;
+    tenor_token: string;
+    test_token: string;
+    tmdb_token: string;
+    total_shards: string;
+    website_link: string;
+    xivapi_token: string;
+    youtube_token: string;
+}
