@@ -3,8 +3,8 @@ process.env.TZ = "UTC";
 // Load API Handler
 import APIHandler from "./modules/APIHandler";
 import APIBroadcastHandler from "./modules/APIBroadcastHandler";
-const DBHandler = require("./modules/DBHandler");
-const TwitchHandler = require("./modules/TwitchHandler");
+import DBHandler from "./modules/DBHandler";
+//const TwitchHandler = require("./modules/TwitchHandler");
 
 // Log startup
 console.log(`Running Bahamut API v${process.env.npm_package_version} on Node ${process.version}.`);
@@ -20,18 +20,20 @@ export class BahamutAPIHandler {
     private readonly _dbHandler;
     private readonly _apiHandler;
     private readonly _broadcastHandler;
-    private readonly _twitchHandler;
+    //private readonly _twitchHandler;
 
     constructor() {
         // Init db
         this._dbHandler = new DBHandler(this);
+        this._dbHandler.dbInit();
         // Init api server
         this._apiHandler = new APIHandler(this);
         // Load broadcast functions
         this._broadcastHandler = new APIBroadcastHandler(this);
-        this._twitchHandler = new TwitchHandler(this);
+        //this._twitchHandler = new TwitchHandler(this);
 
-        this._twitchHandler.loadAllTwitchSubscriptions();
+        //this._twitchHandler.loadAllTwitchSubscriptions();
+
     }
 
     public get startTime() {
@@ -55,9 +57,9 @@ export class BahamutAPIHandler {
     public get broadcastHandler() {
         return this._broadcastHandler;
     }
-    public get twitchHandler() {
-        return this._twitchHandler;
-    }
+    //public get twitchHandler() {
+    //    return this._twitchHandler;
+    //}
 }
 
 // Start server
