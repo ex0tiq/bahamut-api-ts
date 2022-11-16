@@ -1,11 +1,11 @@
 import logger from "../../Logger";
-import { BahamutAPIHandler } from "../../../index";
 import { getServerBootConfiguration } from "../../../lib/bootConfigurationFunctions";
 import { isUUID } from "../../../lib/validateFunctions";
 import ShardingServer from "../../ShardingServer";
+import APIHandler from "../../APIHandler";
 
-export default (apiHandler: BahamutAPIHandler) => {
-    apiHandler.apiHandler.srv.post("/srvHeartbeat", async (req, res) => {
+export default (apiHandler: APIHandler) => {
+    apiHandler.srv.post("/srvHeartbeat", async (req, res) => {
         // Check register pre-requisites
         if (!req.query || !req.query.registerToken) {
             res.status(400);
@@ -16,7 +16,7 @@ export default (apiHandler: BahamutAPIHandler) => {
             }));
             return;
         }
-        if (!apiHandler.config.register_tokens.includes(req.query.registerToken)) {
+        if (!apiHandler.manager.config.register_tokens.includes(req.query.registerToken)) {
             res.status(403);
             res.end(JSON.stringify({
                 status: "error",
@@ -48,17 +48,17 @@ export default (apiHandler: BahamutAPIHandler) => {
             ip = ip!.split(",")[0];
         }
 
-        if (!apiHandler.registeredShardingServers.has(req.query.registerToken) || apiHandler.registeredShardingServers.get(req.query.registerToken).communication_token !== req.body.communication_token) {
+        if (!apiHandler.manager.registeredShardingServers.has(req.query.registerToken) || apiHandler.manager.registeredShardingServers.get(req.query.registerToken).communication_token !== req.body.communication_token) {
             logger.ready(`New server ${ip}:${req.body.port} online and registered (Latency: ${(Date.now() - req.body.currentTime)}ms).`);
         }
 
-        apiHandler.registeredShardingServers.set(req.query.registerToken, new ShardingServer(req.body, <string>ip!));
+        apiHandler.manager.registeredShardingServers.set(req.query.registerToken, new ShardingServer(req.body, <string>ip!));
 
         if (req.body.requestBootConf) {
             res.end(JSON.stringify({
                 status: "success",
                 message: "bootconf",
-                result: (await getServerBootConfiguration(apiHandler, <string>req.query.registerToken)),
+                result: (await getServerBootConfiguration(apiHandler.manager, <string>req.query.registerToken)),
             }));
         } else {
             res.end(JSON.stringify({

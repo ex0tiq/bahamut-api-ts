@@ -118,6 +118,9 @@ export default class APIHandler {
         });
     }
 
+    public get manager() {
+        return this._apiManager;
+    }
     public get srv() {
         return this._srv;
     }
@@ -133,9 +136,10 @@ export default class APIHandler {
 
         // Register all api handlers
         const handlerFiles = await recursive(`${__dirname}/apiHandlers/`);
-        handlerFiles.forEach((file: string) => {
-            //require(file)(this, this._apiManager);
-        });
+        for (const file of handlerFiles) {
+            const mod = (await import(file)).default;
+            mod(this);
+        }
         //await this._apiManager.twitchHandler.registerTwitchEventSubListener(this._srv);
 
         this._srv.get("*", (req, res) => {
