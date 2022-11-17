@@ -1,5 +1,3 @@
-import { getLatestLodestoneNews } from "./lib/GetFunctions";
-
 process.env.TZ = "UTC";
 
 // Load API Handler
