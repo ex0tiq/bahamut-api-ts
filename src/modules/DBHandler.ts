@@ -140,6 +140,70 @@ export default class DBHandler {
             modelName: "server_configs",
             freezeTableName: true,
         });
+        DBGuildCommandLog.init({
+            entry_id: {
+                type: DataTypes.UUID,
+                allowNull: false,
+                defaultValue: DataTypes.UUIDV4,
+                primaryKey: true,
+            },
+            guild_id: {
+                type: DataTypes.STRING(30),
+                allowNull: false,
+            },
+            guild_user: {
+                type: DataTypes.STRING(30),
+                allowNull: false,
+            },
+            guild_username: {
+                type: DataTypes.STRING(50),
+                allowNull: false,
+            },
+            guild_channel: {
+                type: DataTypes.STRING(30),
+                allowNull: false,
+            },
+            command: {
+                type: DataTypes.STRING(30),
+                allowNull: false,
+            },
+            args: {
+                type: DataTypes.STRING(2000),
+                defaultValue: null,
+            },
+            createdAt: DataTypes.DATE,
+        }, {
+            sequelize: this._dbCon,
+            modelName: "guild_command_logs",
+            freezeTableName: true,
+        });
+        DBGuildUserStats.init({
+            guild_id: {
+                type: DataTypes.STRING(30),
+                allowNull: false,
+                primaryKey: true,
+            },
+            guild_user: {
+                type: DataTypes.STRING(30),
+                allowNull: false,
+                primaryKey: true,
+            },
+            stat: {
+                type: DataTypes.STRING(30),
+                allowNull: false,
+                primaryKey: true,
+            },
+            val: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
+            },
+            updatedAt: DataTypes.DATE,
+        }, {
+            sequelize: this._dbCon,
+            modelName: "guild_user_stats",
+            freezeTableName: true,
+        });
     };
 }
 
