@@ -2,7 +2,7 @@ import axios from "axios";
 import { BahamutAPIHandler } from "../index";
 
 const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
-    const lastLodestoneUpdates = await axios("https://lodestonenews.com/news/all?limit=10", {
+    const lastLodestoneUpdates = await axios("https://lodestonenews.com/news/all?limit=10&locale=eu", {
             method: "GET",
             timeout: 3000,
         }),
