@@ -7,8 +7,8 @@ export default class ShardingServer {
     private readonly _port: number;
     private readonly _communication_token: string;
     private readonly _lastMessageTime: number;
-    private _managedGuilds: Map<string, ManagedGuild> = new Map<string, ManagedGuild>;
-    private _managedShards: Map<number, ManagedShard> = new Map<number, ManagedShard>;
+    private _managedGuilds: ManagedGuild[];
+    private _managedShards: ManagedShard[];
     private readonly _startupTime: number;
     private readonly _currentServerTime: number;
     private readonly _latency: number;
@@ -20,18 +20,13 @@ export default class ShardingServer {
         this._port = json.port;
         this._communication_token = json.communication_token;
         this._lastMessageTime = Date.now();
-
-        for (const s of json.managedShards) {
-            this._managedShards.set(s.shardId, s);
-        }
-        for (const g of json.managedGuilds) {
-            this._managedGuilds.set(g.id, g);
-        }
-
         this._startupTime = json.startupTime;
         this._currentServerTime = json.currentTime;
         this._latency = (Date.now() - json.currentTime);
         this._serverLocation = toProperCase(json.serverLocation);
+
+        this._managedShards = json.managedShards;
+        this._managedGuilds = Array.isArray(this._managedShards) ? this._managedShards.map(e => e.guilds).flat() : [];
     }
 
     public get id() {
