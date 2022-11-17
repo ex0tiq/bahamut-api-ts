@@ -23,7 +23,7 @@ export default class CommandLogHandler {
                         guild_id: guild,
                     },
                 })
-                .then(async (count: number) => {
+                .then((count: number) => {
                     resolve(count);
                 }).catch(e => {
                     console.error("Error while fetching command log count:", e);
@@ -47,7 +47,7 @@ export default class CommandLogHandler {
                         guild_user: user,
                     },
                 })
-                .then(async (count: number) => {
+                .then((count: number) => {
                     resolve(count);
                 }).catch(e => {
                     console.error("Error while fetching command log count:", e);
@@ -63,8 +63,10 @@ export default class CommandLogHandler {
     getDBFullCommandLogCount = async (): Promise<number> => {
         return new Promise((resolve) => {
             return DBGuildCommandLog
-                .count()
-                .then(async (count: number) => {
+                .count({
+                    col: "entry_id",
+                })
+                .then((count: number) => {
                     resolve(count);
                 }).catch(e => {
                     console.error("Error while fetching command log count:", e);
@@ -73,7 +75,7 @@ export default class CommandLogHandler {
         });
     };
 
-    getGuildCommandLog = async (guild: string, limit = 25, startDate = null, endDate = null) => {
+    getDBGuildCommandLog = async (guild: string, limit = 25, startDate: number | null = null, endDate: number | null = null) => {
         return new Promise((resolve) => {
             const where: WhereOptions = {
                 guild_id: guild,
@@ -99,7 +101,7 @@ export default class CommandLogHandler {
                     order: ["createdAt", "DESC"],
                     limit: limit,
                 })
-                .then(async (logs) => {
+                .then((logs) => {
                     resolve(logs);
                 }).catch(e => {
                     console.error("Error while fetching command log count:", e);
