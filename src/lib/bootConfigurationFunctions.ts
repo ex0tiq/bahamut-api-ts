@@ -6,25 +6,25 @@ const getServerBootConfiguration = async (apiHandler: APIHandler, serverRegister
         config_types = require("../../config/config_types.json"),
         defaultBotSettings = require("../../config/defaultBotSettings.json");
 
-    const temp = Object.fromEntries(globalConfig.entries());
+    const config = { ...globalConfig };
 
     serverConfig.testMode = true;
 
-    if (serverConfig.testMode) temp["token"] = globalConfig.get("test_token");
-    else temp["token"] = globalConfig.get("prod_token");
+    if (serverConfig.testMode) config.token = globalConfig.test_token;
+    else config.token = globalConfig.prod_token;
 
-    delete temp["test_token"];
-    delete temp["prod_token"];
+    delete config.test_token;
+    delete config.prod_token;
 
     // Overwrite global config with per server settings
     for (const [key, val] of Object.entries(serverConfig)) {
-        temp[key] = val;
+        config[key] = val;
     }
 
-    temp["config_types"] = config_types;
-    temp["defaultSettings"] = defaultBotSettings;
+    config["config_types"] = config_types;
+    config["defaultSettings"] = defaultBotSettings;
 
-    return temp;
+    return config;
 };
 
 export { getServerBootConfiguration };
