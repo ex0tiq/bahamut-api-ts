@@ -48,17 +48,17 @@ export default (apiHandler: APIHandler) => {
             ip = ip!.split(",")[0];
         }
 
-        if (!apiHandler.manager.registeredShardingServers.has(req.query.registerToken) || apiHandler.manager.registeredShardingServers.get(req.query.registerToken).communication_token !== req.body.communication_token) {
+        if (!apiHandler.manager.registeredShardingServers.has(<string>req.query.registerToken) || apiHandler.manager.registeredShardingServers.get(<string>req.query.registerToken)?.communication_token !== req.body.communication_token) {
             logger.ready(`New server ${ip}:${req.body.port} online and registered (Latency: ${(Date.now() - req.body.currentTime)}ms).`);
         }
 
-        apiHandler.manager.registeredShardingServers.set(req.query.registerToken, new ShardingServer(req.body, <string>ip!));
+        apiHandler.manager.registeredShardingServers.set(<string>req.query.registerToken, new ShardingServer(req.body, <string>ip!));
 
         if (req.body.requestBootConf) {
             res.end(JSON.stringify({
                 status: "success",
                 message: "bootconf",
-                result: (await getServerBootConfiguration(apiHandler.manager, <string>req.query.registerToken)),
+                result: (await getServerBootConfiguration(apiHandler, <string>req.query.registerToken)),
             }));
         } else {
             res.end(JSON.stringify({
