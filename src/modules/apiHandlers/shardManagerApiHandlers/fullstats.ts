@@ -1,6 +1,6 @@
 import APIHandler from "../../APIHandler";
 import BahamutClient from "bahamutbot/src/modules/BahamutClient";
-import { fromObject } from "../../../lib/toolFunctions";
+import { fromObject, toProperCase } from "../../../lib/toolFunctions";
 
 const { parseBool } = require("../../../lib/parseFunctions");
 const { isBool } = require("../../../lib/validateFunctions");
@@ -97,7 +97,7 @@ export default (apiHandler: APIHandler) => {
         // Return the end result
         return array.reduce((result, currentValue) => {
             let newKey = currentValue["server"][key];
-            if (properCaseKey) newKey = newKey.toProperCase();
+            if (properCaseKey) newKey = toProperCase(newKey);
 
             // If an array already present for key, push it to the array. Else create an array and push the object
             (result[newKey] = result[newKey] || []).push(
