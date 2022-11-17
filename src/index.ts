@@ -1,3 +1,5 @@
+import ShardingServer from "./modules/ShardingServer";
+
 process.env.TZ = "UTC";
 
 // Load API Handler
@@ -13,7 +15,7 @@ export class BahamutAPIHandler {
     private _startTime = Date.now();
     private _config = require("../config/api_config.json");
     // Object which contains all registered app servers
-    private _registeredShardingServers = new Map();
+    private _registeredShardingServers: Map<string, ShardingServer> = new Map();
     // Contains all managed users
     private _managedUsers = new Map();
     // Contains the handler for all database stuff
