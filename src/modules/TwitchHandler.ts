@@ -142,6 +142,7 @@ export default class TwitchHandler {
         await this.middleware!.markAsReady();
 
         logger.log(`Loading ${this.twitch_subscriptions.length} twitch user subscriptions...`);
+        // eslint-disable-next-line no-unused-vars
         for (const e of this.twitch_subscriptions) {
             // await this.addTwitchStreamOnlineEventSub(e);
         }
@@ -167,7 +168,9 @@ export default class TwitchHandler {
         }
     };
 
+    // @ts-ignore
+    // eslint-disable-next-line no-unused-vars,no-empty-function
     removeTwitchStreamOnlineEventSub = async (userId, force = false) => {
 
     };
-};
+}
