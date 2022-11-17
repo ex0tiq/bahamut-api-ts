@@ -34,4 +34,10 @@ const groupBy = (array: any[], key: string, properCaseKey = false) => {
     }, {});
 };
 
-export { toProperCase, fromObject, groupBy };
+const flattenArray = (arr: any[]): any[] => {
+    return arr.reduce(function(flat, toFlatten) {
+        return flat.concat(Array.isArray(toFlatten) ? flattenArray(toFlatten) : toFlatten);
+    }, []);
+};
+
+export { toProperCase, fromObject, groupBy, flattenArray };
