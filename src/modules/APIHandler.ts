@@ -80,7 +80,7 @@ export default class APIHandler {
                             .map(([key, val]) => `${key}=${val}`).join("&"),
                         space = " ".repeat(15 - ip!.length);
 
-                    if (!req.originalUrl.toLowerCase().includes("_srvheartbeat")) logger.log(`[API][${ip}${space}] ${req.headers["referer"] ? (new URL(req.headers["referer"])).pathname : "/"} => ${req.path}${param ? `?${param}` : ""}`);
+                    if (!req.originalUrl.toLowerCase().includes("srvheartbeat")) logger.log(`[API][${ip}${space}] ${req.headers["referer"] ? (new URL(req.headers["referer"])).pathname : "/"} => ${req.path}${param ? `?${param}` : ""}`);
                     next();
                 }
             } catch (ex) {
