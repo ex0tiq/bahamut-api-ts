@@ -1,4 +1,4 @@
-import ShardingServer from "./modules/ShardingServer";
+import { getLatestLodestoneNews } from "./lib/GetFunctions";
 
 process.env.TZ = "UTC";
 
@@ -6,7 +6,8 @@ process.env.TZ = "UTC";
 import APIHandler from "./modules/APIHandler";
 import APIBroadcastHandler from "./modules/APIBroadcastHandler";
 import DBHandler from "./modules/DBHandler";
-//const TwitchHandler = require("./modules/TwitchHandler");
+import TwitchHandler from "./modules/TwitchHandler";
+import ShardingServer from "./modules/ShardingServer";
 
 // Log startup
 console.log(`Running Bahamut API v${process.env.npm_package_version} on Node ${process.version}.`);
@@ -22,7 +23,7 @@ export class BahamutAPIHandler {
     private readonly _dbHandler;
     private readonly _apiHandler;
     private readonly _broadcastHandler;
-    //private readonly _twitchHandler;
+    private readonly _twitchHandler;
 
     constructor() {
         // Init db
@@ -32,10 +33,9 @@ export class BahamutAPIHandler {
         this._apiHandler = new APIHandler(this);
         // Load broadcast functions
         this._broadcastHandler = new APIBroadcastHandler(this);
-        //this._twitchHandler = new TwitchHandler(this);
+        this._twitchHandler = new TwitchHandler(this);
 
-        //this._twitchHandler.loadAllTwitchSubscriptions();
-
+        this._twitchHandler.loadAllTwitchSubscriptions();
     }
 
     public get startTime() {
@@ -59,9 +59,9 @@ export class BahamutAPIHandler {
     public get broadcastHandler() {
         return this._broadcastHandler;
     }
-    //public get twitchHandler() {
-    //    return this._twitchHandler;
-    //}
+    public get twitchHandler() {
+        return this._twitchHandler;
+    }
 }
 
 // Start server
