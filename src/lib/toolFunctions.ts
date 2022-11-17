@@ -12,4 +12,20 @@ const fromObject = (obj: any, suppressAttributes: string[] = []) => {
     return ret;
 };
 
-export { toProperCase, fromObject };
+const groupBy = (array: any[], key: string, properCaseKey = false) => {
+
+    // Return the end result
+    return array.reduce((result, currentValue) => {
+        let newKey = currentValue[key];
+        if (properCaseKey) newKey = newKey.toProperCase();
+
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[newKey] = result[newKey] || []).push(
+            currentValue
+        );
+        // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+        return result;
+    }, {});
+};
+
+export { toProperCase, fromObject, groupBy };
