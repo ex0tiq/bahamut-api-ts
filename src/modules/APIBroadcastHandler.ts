@@ -72,7 +72,7 @@ export default class APIBroadcastHandler {
         for (const [, srv] of this._apiHandler.registeredShardingServers) {
             if (!Array.isArray(srv.managedGuilds)) continue;
             // Send request to server
-            if (srv.managedGuilds.has(guild)) {
+            if (srv.managedGuilds.find(e => e.id === guild)) {
                 try {
                     const codeString = code.toString();
 
@@ -122,7 +122,7 @@ export default class APIBroadcastHandler {
         // eslint-disable-next-line no-unused-vars
         for (const [, srv] of this._apiHandler.registeredShardingServers) {
             // Send request to server
-            if (srv.managedShards.has(shard)) {
+            if (srv.managedShards.find(e => e.shardId === shard)) {
                 try {
                     const codeString = code.toString();
 
@@ -207,7 +207,7 @@ export default class APIBroadcastHandler {
         if (this._apiHandler.registeredShardingServers.size <= 0) return null;
 
         for (const [, srv] of this._apiHandler.registeredShardingServers.entries()) {
-            if (srv.managedGuilds.has(guild)) {
+            if (srv.managedGuilds.find(e => e.id === guild)) {
                 return srv;
             }
         }
@@ -225,7 +225,7 @@ export default class APIBroadcastHandler {
     getAllManagedGuilds = (): ManagedGuild[] => {
         const result = [];
         for (const [, srv] of this._apiHandler.registeredShardingServers) {
-            result.push(...srv.managedGuilds.values());
+            result.push(...srv.managedGuilds);
         }
         return result.flat().sort((a, b) => a.name.localeCompare(b.name));
     };
