@@ -8,7 +8,7 @@ const getServerBootConfiguration = async (apiHandler: APIHandler, serverRegister
 
     const config = { ...globalConfig };
 
-    serverConfig.testMode = true;
+    // serverConfig.testMode = true;
 
     if (serverConfig.testMode) config.token = globalConfig.test_token;
     else config.token = globalConfig.prod_token;

@@ -1,8 +1,8 @@
 import APIHandler from "../modules/APIHandler";
 
-const isUserBotAdmin = async (apiHandler: APIHandler, user: string, globalConfig?: Map<string, string>) => {
-    if (!globalConfig) globalConfig = await apiHandler.manager.dbHandler.config.getDBGlobalConfig();
-    return (globalConfig.get("owner_id") === user || globalConfig.get("admins")!.includes(user));
+const isUserBotAdmin = async (apiHandler: APIHandler, user: string, globalConfig?: any) => {
+    if (!globalConfig) globalConfig = require("../../config/global_config.json") || {};
+    return (globalConfig["owner_id"] === user || globalConfig["admins"]!.includes(user));
 };
 
 export { isUserBotAdmin };

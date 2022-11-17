@@ -13,8 +13,8 @@ export default(apiHandler: APIHandler) => {
             return;
         }
 
-        const globalConfig = await apiHandler.manager.dbHandler.config.getDBGlobalConfig();
-        if (!await (isUserBotAdmin(apiHandler, <string>req.query.user, globalConfig))) {
+        const globalConfig = require("../../config/global_config.json") || {};
+        if (!await (isUserBotAdmin(apiHandler, <string>req.query.user, { ...globalConfig }))) {
             res.status(403);
             res.end(JSON.stringify({
                 status: "error",
