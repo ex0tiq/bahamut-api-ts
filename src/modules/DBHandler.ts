@@ -93,27 +93,6 @@ export default class DBHandler {
     };
 
     defineModels = () => {
-        DBGlobalConfig.init({
-            setting: {
-                type: DataTypes.STRING(30),
-                allowNull: false,
-                primaryKey: true,
-            },
-            val: {
-                type: DataTypes.TEXT("long"),
-                allowNull: true,
-                defaultValue: null,
-            },
-            val_type: {
-                type: DataTypes.STRING(30),
-                allowNull: true,
-                defaultValue: null,
-            },
-        }, {
-            sequelize: this._dbCon,
-            modelName: "global_configs",
-            freezeTableName: true,
-        });
         DBServerConfig.init({
             server: {
                 type: DataTypes.STRING(30),
@@ -261,11 +240,6 @@ export class DBGuildCommandLog extends Model<InferAttributes<DBGuildCommandLog>,
     declare command: string;
     declare args: string;
     declare createdAt: CreationOptional<Date>;
-}
-export class DBGlobalConfig extends Model<InferAttributes<DBGlobalConfig>, InferCreationAttributes<DBGlobalConfig>> {
-    declare setting: string;
-    declare val: string;
-    declare val_type: string;
 }
 export class DBServerConfig extends Model<InferAttributes<DBServerConfig>, InferCreationAttributes<DBServerConfig>> {
     declare server: string;

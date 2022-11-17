@@ -1,7 +1,7 @@
 import APIHandler from "../modules/APIHandler";
 
 const getServerBootConfiguration = async (apiHandler: APIHandler, serverRegisterToken: string) => {
-    const globalConfig = await apiHandler.manager.dbHandler.config.getDBGlobalConfig(),
+    const globalConfig = require("../../config/global_config.json") || {},
         serverConfig = await apiHandler.manager.dbHandler.config.getDBServerConfig(serverRegisterToken),
         config_types = require("../../config/config_types.json"),
         defaultBotSettings = require("../../config/defaultBotSettings.json");
