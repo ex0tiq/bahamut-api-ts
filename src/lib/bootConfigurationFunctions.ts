@@ -1,28 +1,30 @@
-import { BahamutAPIHandler } from "../index";
+import APIHandler from "../modules/APIHandler";
 
-const getServerBootConfiguration = async (apiHandler: BahamutAPIHandler, serverRegisterToken: string) => {
-    const globalConfig = await apiHandler.dbHandler.getGlobalConfig(),
-        serverConfig = await apiHandler.dbHandler.getServerConfig(serverRegisterToken),
+const getServerBootConfiguration = async (apiHandler: APIHandler, serverRegisterToken: string) => {
+    const globalConfig = await apiHandler.manager.dbHandler.config.getDBGlobalConfig(),
+        serverConfig = await apiHandler.manager.dbHandler.config.getDBServerConfig(serverRegisterToken),
         config_types = require("../../config/config_types.json"),
         defaultBotSettings = require("../../config/defaultBotSettings.json");
 
+    const temp = Object.fromEntries(globalConfig.entries());
+
     serverConfig.testMode = true;
 
-    if (serverConfig.testMode) globalConfig.token = globalConfig.test_token;
-    else globalConfig.token = globalConfig.prod_token;
+    if (serverConfig.testMode) temp["token"] = globalConfig.get("test_token");
+    else temp["token"] = globalConfig.get("prod_token");
 
-    delete globalConfig.test_token;
-    delete globalConfig.prod_token;
+    delete temp["test_token"];
+    delete temp["prod_token"];
 
     // Overwrite global config with per server settings
     for (const [key, val] of Object.entries(serverConfig)) {
-        globalConfig[key] = val;
+        temp[key] = val;
     }
 
-    globalConfig["config_types"] = config_types;
-    globalConfig["defaultSettings"] = defaultBotSettings;
+    temp["config_types"] = config_types;
+    temp["defaultSettings"] = defaultBotSettings;
 
-    return globalConfig;
+    return temp;
 };
 
 export { getServerBootConfiguration };
