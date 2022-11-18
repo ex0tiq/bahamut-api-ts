@@ -65,14 +65,14 @@ export default class TwitchHandler {
         for (const [guild, subs] of Object.entries(this.guild_twitch_subscriptions)) {
             if (subs.includes(streamEvent.broadcasterId)) {
                 await this._apiManager.apiHandler.manager.broadcastHandler.broadcastToGuild(async (_client: BahamutClient, obj: any) => {
-                    const { getGuildSettings } = require("../lib/getFunctions");
+                    const { getGuildSettings } = require(obj.rootPath + "/lib/getFunctions");
 
                     const settings = await getGuildSettings(_client, _client.guilds.cache.has(obj.guild)!);
                     if (!settings.twitch_notify_channel) return;
 
                     // Handle notify
                     const { MessageEmbed, Message } = require("discord.js");
-                    const { resolveRole, resolveChannel } = require("../../lib/resolveFunctions");
+                    const { resolveRole, resolveChannel } = require(obj.rootPath + "/lib/resolveFunctions");
                     const embed = new MessageEmbed(), msg = new Message(), role = (settings.twitch_notify_role ? (await resolveRole(this, null, settings.twitch_notify_role, false, obj.guild)) : null),
                         channel = await resolveChannel(this, null, settings.twitch_notify_channel, false, obj.guild);
 
