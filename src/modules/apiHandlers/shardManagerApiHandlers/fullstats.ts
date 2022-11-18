@@ -49,7 +49,7 @@ export default (apiHandler: APIHandler) => {
         }
 
         for (const t of temp) {
-            const server = fromObject(t.server, ["managedGuilds", "managedShards", "ip", "port", "communication_token"], true);
+            const server = fromObject(t.server, ["managedGuilds", "managedShards", "ip", "port", "communication_token"]);
             let tmp = { data: { result: null } };
 
             if (detailed) {
