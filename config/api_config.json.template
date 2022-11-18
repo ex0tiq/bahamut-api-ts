@@ -1,0 +1,17 @@
+{
+  "hostname": "",
+  "api_token": "",
+  "ownerID": "",
+  "register_tokens": [""],
+  "db": {
+    "host": "",
+    "user": "",
+    "pass": "",
+    "database": ""
+  },
+  "twitch": {
+    "clientId": "",
+    "clientSecret": "",
+    "signingSecret": ""
+  }
+}
