@@ -98,7 +98,9 @@ export default class CommandLogHandler {
             return DBGuildCommandLog
                 .findAll({
                     where: where,
-                    order: ["createdAt", "DESC"],
+                    order: [
+                        ["createdAt", "DESC"],
+                    ],
                     limit: limit,
                 })
                 .then((logs) => {
