@@ -1,14 +1,13 @@
 import APIHandler from "../../APIHandler";
 import BahamutClient from "bahamutbot/src/modules/BahamutClient";
 import { fromObject, toProperCase } from "../../../lib/toolFunctions";
-
-const { parseBool } = require("../../../lib/parseFunctions");
-const { isBool } = require("../../../lib/validateFunctions");
+import { parseBool } from "../../../lib/parseFunctions";
+import { isBool } from "../../../lib/validateFunctions";
 
 export default (apiHandler: APIHandler) => {
     apiHandler.srv.get("/fullstats", async (req, res) => {
-        const detailed = (req.query.detailed && isBool(req.query.detailed) ? parseBool(req.query.detailed) : false),
-            locationSeparated = (req.query.locationSeparated && isBool(req.query.locationSeparated) ? parseBool(req.query.locationSeparated) : false);
+        const detailed = (req.query.detailed && isBool(<string>req.query.detailed) ? parseBool(<string>req.query.detailed) : false),
+            locationSeparated = (req.query.locationSeparated && isBool(<string>req.query.locationSeparated) ? parseBool(<string>req.query.locationSeparated) : false);
 
         const data = await getShardStats(detailed, locationSeparated);
 
@@ -19,7 +18,7 @@ export default (apiHandler: APIHandler) => {
         }));
     });
 
-    const getShardStats = async (detailed = false, locationSeparated = false) => {
+    const getShardStats = async (detailed?: boolean | null, locationSeparated?: boolean | null) => {
         let srvData = [], temp = null;
 
         if (detailed) {
