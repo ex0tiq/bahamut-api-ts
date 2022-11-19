@@ -1,17 +1,16 @@
 import APIHandler from "../modules/APIHandler";
 
 const getServerBootConfiguration = async (apiHandler: APIHandler, serverRegisterToken: string) => {
-    const globalConfig = require("../../config/global_config.json") || {},
-        serverConfig = await apiHandler.manager.dbHandler.config.getDBServerConfig(serverRegisterToken),
+    const serverConfig = await apiHandler.manager.dbHandler.config.getDBServerConfig(serverRegisterToken),
         config_types = require("../../config/config_types.json"),
         defaultBotSettings = require("../../config/defaultBotSettings.json");
 
-    const config = { ...globalConfig };
+    const config = { ...apiHandler.manager.globalConfig };
 
     // serverConfig.testMode = true;
 
-    if (serverConfig.testMode) config.token = globalConfig.test_token;
-    else config.token = globalConfig.prod_token;
+    if (serverConfig.testMode) config.token = apiHandler.manager.globalConfig.test_token;
+    else config.token = apiHandler.manager.globalConfig.prod_token;
 
     delete config.test_token;
     delete config.prod_token;

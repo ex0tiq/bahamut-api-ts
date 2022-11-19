@@ -13,6 +13,7 @@ console.log(`Running Bahamut API v${process.env.npm_package_version} on Node ${p
 export class BahamutAPIHandler {
     private _startTime = Date.now();
     private _config = require("../config/api_config.json");
+    private _globalConfig = require("../config/global_config.json");
     // Object which contains all registered app servers
     private _registeredShardingServers: Map<string, ShardingServer> = new Map();
     // Contains all managed users
@@ -41,6 +42,9 @@ export class BahamutAPIHandler {
     }
     public get config() {
         return this._config;
+    }
+    public get globalConfig() {
+        return this._globalConfig;
     }
     public get registeredShardingServers() {
         return this._registeredShardingServers;
