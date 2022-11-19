@@ -1,3 +1,5 @@
+import GlobalSchedulers from "./modules/GlobalSchedulers";
+
 process.env.TZ = "UTC";
 
 // Load API Handler
@@ -35,6 +37,9 @@ export class BahamutAPIHandler {
         this._twitchHandler = new TwitchHandler(this);
 
         this._twitchHandler.loadAllTwitchSubscriptions();
+
+        // Load global schedules
+        new GlobalSchedulers(this);
     }
 
     public get startTime() {
