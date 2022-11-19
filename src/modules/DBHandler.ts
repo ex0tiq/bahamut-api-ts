@@ -93,6 +93,30 @@ export default class DBHandler {
     };
 
     defineModels = () => {
+        DBGuildSettings.init({
+            guild_id: {
+                type: DataTypes.STRING(30),
+                allowNull: false,
+                primaryKey: true,
+            },
+            setting: {
+                type: DataTypes.STRING(50),
+                allowNull: false,
+                primaryKey: true,
+            },
+            val: {
+                type: DataTypes.TEXT("long"),
+                defaultValue: null,
+            },
+            val_type: {
+                type: DataTypes.STRING(50),
+                allowNull: false,
+            },
+        }, {
+            sequelize: this._dbCon,
+            modelName: "guild_settings",
+            freezeTableName: true,
+        });
         DBServerConfig.init({
             server: {
                 type: DataTypes.STRING(30),
