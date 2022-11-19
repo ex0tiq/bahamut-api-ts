@@ -1,3 +1,5 @@
+import { GuildSettings } from "bahamutbot";
+
 export interface ShardingServerConfig {
     serverId: string;
     ip: string;
@@ -49,6 +51,63 @@ export interface ManagedShard {
     playingMusicQueues: number;
     uptime: number;
     time: number;
+}
+
+export interface LodestoneNewsData {
+    topics: {
+        id: string;
+        url: string;
+        title: string;
+        time: string;
+        image: string;
+        description: string;
+    }[],
+    notices: {
+        id: string;
+        url: string;
+        title: string;
+        time: string;
+    }[],
+    maintenance: {
+        id: string;
+        url: string;
+        title: string;
+        time: string;
+        start: string;
+        end: string;
+    }[],
+    updates: {
+        id: string;
+        url: string;
+        title: string;
+        time: string;
+    }[],
+    status: {
+        id: string;
+        url: string;
+        title: string;
+        time: string;
+    }[],
+    developers: {
+        id: string;
+        url: string;
+        title: string;
+        time: string;
+        description: string;
+    }[]
+}
+
+export interface GlobalGuildSettings extends Partial<GuildSettings> {
+    lastFashionReport: string;
+    lastFashionReportDate: string;
+    lastLodestonePosts: {
+        topics: string;
+        notices: string;
+        maintenance: string;
+        updates: string;
+        status: string;
+        developers: string;
+    }
 }
 
 export interface GlobalConfig {
