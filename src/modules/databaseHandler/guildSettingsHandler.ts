@@ -72,7 +72,7 @@ export default class GuildSettingsHandler {
                 },
                 raw: true,
                 // eslint-disable-next-line no-empty-function
-            }).catch(() => {});
+            }).catch((e) => console.error("Error fetching guild settings:", e));
 
             if (!settings) return null;
 
@@ -132,7 +132,7 @@ export default class GuildSettingsHandler {
     };
 
     setDBGuildSetting = async (guild: string, setting: string, value: any, value_type?: string): Promise<boolean> => {
-        const types = this._dbHandler.manager.config.config_types, type = types[setting] || "string";
+        const types = this._dbHandler.manager.config.config_types, type = (value_type ?? (types[setting] || "string"));
 
         return new Promise((resolve) => {
             return DBGuildSettings
