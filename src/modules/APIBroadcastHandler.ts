@@ -37,7 +37,7 @@ export default class APIBroadcastHandler {
                         code: codeString,
                         additionalContext: additionalContextAttributes,
                     },
-                    timeout: 2000,
+                    timeout: 10000,
                 });
 
                 if (resp && resp.data) {
@@ -86,7 +86,7 @@ export default class APIBroadcastHandler {
                             guild: guild,
                             additionalContext: additionalContextAttributes,
                         },
-                        timeout: 2000,
+                        timeout: 10000,
                     });
 
                     if (resp && resp.data) {
@@ -136,7 +136,7 @@ export default class APIBroadcastHandler {
                             shard: shard,
                             additionalContext: additionalContextAttributes,
                         },
-                        timeout: 2000,
+                        timeout: 10000,
                     });
 
                     if (resp && resp.data) {
@@ -174,7 +174,7 @@ export default class APIBroadcastHandler {
                         code: codeString,
                         additionalContext: additionalContextAttributes,
                     },
-                    timeout: 2000,
+                    timeout: 10000,
                 });
 
                 if (resp) {
