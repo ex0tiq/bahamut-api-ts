@@ -3,6 +3,7 @@ import { parseBool } from "../../lib/parseFunctions";
 import DBHandler, { DBGuildSettings } from "../DBHandler";
 import { WhereOptions } from "sequelize";
 import { GuildSettings } from "bahamutbot";
+import { GlobalGuildSettings } from "../../../typings";
 
 export default class GuildSettingsHandler {
     // DB Handler instance
@@ -63,7 +64,7 @@ export default class GuildSettingsHandler {
         }
     };
 
-    getDBGuildSettings = async (guild: string): Promise<GuildSettings | null> => {
+    getDBGuildSettings = async (guild: string): Promise<GuildSettings | GlobalGuildSettings | null> => {
         try {
             const settings = await DBGuildSettings.findAll({
                 where: {
