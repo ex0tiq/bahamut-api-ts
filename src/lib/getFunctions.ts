@@ -5,7 +5,7 @@ import { EmbedBuilder } from "discord.js";
 
 const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
     try {
-        const lastLodestoneUpdates = await axios("https://lodestonenews.com/news/all?limit=10&locale=eu", {
+        const lastLodestoneUpdates = await axios("https://lodestonenews.com/news/all?limit=10", {
                 method: "GET",
                 timeout: 3000,
             }),
@@ -31,16 +31,17 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
 
         // Get last posted ids
         const globalSetting: GlobalGuildSettings | null = <GlobalGuildSettings | null>await manager.dbHandler.guildSettings.getDBGuildSettings("global");
-        if (!globalSetting) return entriesToPost;
+        if (!globalSetting) return null;
 
         if ("topics" in entries) {
             const temp = entries.topics.reverse(),
-                lastIndex = temp.findIndex((e: any) => e.id === globalSetting.lastLodestonePosts.topics);
+                lastIndex = temp.findIndex((e: any) => e.id === (globalSetting.lastLodestoneTopic ? globalSetting.lastLodestoneTopic : null));
 
-            for (const e of temp.slice(lastIndex < 0 ? (temp.length - 1) : lastIndex)) {
+            for (const e of temp.slice((lastIndex < 0) ? -1 : (lastIndex + 1))) {
                 entriesToPost.topics.push({
                     type: "topic",
                     id: e.id,
+                    time: e.time,
                     embed: new EmbedBuilder()
                         .setAuthor({ name: "Topics", iconURL: "https://teraflare.app/assets/bot_assets/lodestone-images/topics.png" })
                         .setColor(manager.globalConfig.primary_message_color)
@@ -54,12 +55,13 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
         }
         if ("notices" in entries) {
             const temp = entries.notices.reverse(),
-                lastIndex = temp.findIndex((e: any) => e.id === globalSetting.lastLodestonePosts.notices);
+                lastIndex = temp.findIndex((e: any) => e.id === (globalSetting.lastLodestoneNotice ? globalSetting.lastLodestoneNotice : null));
 
-            for (const e of temp.slice(lastIndex < 0 ? (temp.length - 1) : lastIndex)) {
+            for (const e of temp.slice((lastIndex < 0) ? -1 : (lastIndex + 1))) {
                 entriesToPost.notices.push({
                     type: "notice",
                     id: e.id,
+                    time: e.time,
                     embed: new EmbedBuilder()
                         .setAuthor({ name: "Notices", iconURL: "https://teraflare.app/assets/bot_assets/lodestone-images/notices.png" })
                         .setColor(manager.globalConfig.primary_message_color)
@@ -71,12 +73,13 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
         }
         if ("maintenance" in entries) {
             const temp = entries.maintenance.reverse(),
-                lastIndex = temp.findIndex((e: any) => e.id === globalSetting.lastLodestonePosts.maintenance);
+                lastIndex = temp.findIndex((e: any) => e.id === (globalSetting.lastLodestoneMaintenance ? globalSetting.lastLodestoneMaintenance : null));
 
-            for (const e of temp.slice(lastIndex < 0 ? (temp.length - 1) : lastIndex)) {
+            for (const e of temp.slice((lastIndex < 0) ? -1 : (lastIndex + 1))) {
                 entriesToPost.maintenance.push({
                     type: "maintenance",
                     id: e.id,
+                    time: e.time,
                     start: e.start,
                     end: e.end,
                     embed: new EmbedBuilder()
@@ -89,12 +92,13 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
         }
         if ("updates" in entries) {
             const temp = entries.updates.reverse(),
-                lastIndex = temp.findIndex((e: any) => e.id === globalSetting.lastLodestonePosts.updates);
+                lastIndex = temp.findIndex((e: any) => e.id === (globalSetting.lastLodestoneUpdate ? globalSetting.lastLodestoneUpdate : null));
 
-            for (const e of temp.slice(lastIndex < 0 ? (temp.length - 1) : lastIndex)) {
+            for (const e of temp.slice((lastIndex < 0) ? -1 : (lastIndex + 1))) {
                 entriesToPost.updates.push({
                     type: "update",
                     id: e.id,
+                    time: e.time,
                     embed: new EmbedBuilder()
                         .setAuthor({ name: "Updates", iconURL: "https://teraflare.app/assets/bot_assets/lodestone-images/updates.png" })
                         .setColor(manager.globalConfig.primary_message_color)
@@ -106,12 +110,13 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
         }
         if ("status" in entries) {
             const temp = entries.status.reverse(),
-                lastIndex = temp.findIndex((e: any) => e.id === globalSetting.lastLodestonePosts.status);
+                lastIndex = temp.findIndex((e: any) => e.id === (globalSetting.lastLodestoneStatus ? globalSetting.lastLodestoneStatus : null));
 
-            for (const e of temp.slice(lastIndex < 0 ? (temp.length - 1) : lastIndex)) {
+            for (const e of temp.slice((lastIndex < 0) ? -1 : (lastIndex + 1))) {
                 entriesToPost.status.push({
                     type: "status",
                     id: e.id,
+                    time: e.time,
                     embed: new EmbedBuilder()
                         .setAuthor({ name: "Status", iconURL: "https://teraflare.app/assets/bot_assets/lodestone-images/status.png" })
                         .setColor(manager.globalConfig.primary_message_color)
@@ -123,12 +128,13 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
         }
         if ("developers" in entries) {
             const temp = entries.developers.reverse(),
-                lastIndex = temp.findIndex((e: any) => e.id === globalSetting.lastLodestonePosts.developers);
+                lastIndex = temp.findIndex((e: any) => e.id === (globalSetting.lastLodestoneDeveloper ? globalSetting.lastLodestoneDeveloper : null));
 
-            for (const e of temp.slice(lastIndex < 0 ? (temp.length - 1) : lastIndex)) {
+            for (const e of temp.slice((lastIndex < 0) ? -1 : (lastIndex + 1))) {
                 entriesToPost.developers.push({
                     type: "developer",
                     id: e.id,
+                    time: e.time,
                     embed: new EmbedBuilder()
                         .setAuthor({ name: "Developer's Blog", iconURL: "https://teraflare.app/assets/bot_assets/lodestone-images/developers.png" })
                         .setColor(manager.globalConfig.primary_message_color)

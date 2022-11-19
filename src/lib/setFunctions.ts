@@ -1,24 +1,19 @@
 import { BahamutAPIHandler } from "../index";
 
-const setLatestLodestoneNews = async (manager: BahamutAPIHandler, latestTopic: string,
-                                      latestNotice: string,
-                                      latestMaintenance: string,
-                                      latestUpdate: string,
-                                      latestStatus: string,
-                                      latestDeveloper: string,
+const setLatestLodestoneNews = async (manager: BahamutAPIHandler, latestTopic?: string,
+                                      latestNotice?: string,
+                                      latestMaintenance?: string,
+                                      latestUpdate?: string,
+                                      latestStatus?: string,
+                                      latestDeveloper?: string,
 ) => {
     try {
-        const lastLodestonePosts = {
-            topics: latestTopic,
-            notices: latestNotice,
-            maintenance: latestMaintenance,
-            updates: latestUpdate,
-            status: latestStatus,
-            developers: latestDeveloper,
-        };
-
-        await manager.dbHandler.guildSettings.setDBGuildSetting("global", "lastLodestonePosts", JSON.stringify(lastLodestonePosts), "json");
-        return true;
+        if (latestTopic) await manager.dbHandler.guildSettings.setDBGuildSetting("global", "lastLodestoneTopic", latestTopic, "string");
+        if (latestNotice) await manager.dbHandler.guildSettings.setDBGuildSetting("global", "lastLodestoneNotice", latestNotice, "string");
+        if (latestMaintenance) await manager.dbHandler.guildSettings.setDBGuildSetting("global", "lastLodestoneMaintenance", latestMaintenance, "string");
+        if (latestUpdate) await manager.dbHandler.guildSettings.setDBGuildSetting("global", "lastLodestoneUpdate", latestUpdate, "string");
+        if (latestStatus) await manager.dbHandler.guildSettings.setDBGuildSetting("global", "lastLodestoneStatus", latestStatus, "string");
+        if (latestDeveloper) await manager.dbHandler.guildSettings.setDBGuildSetting("global", "lastLodestoneDeveloper", latestDeveloper, "string");
     } catch (ex) {
         console.error("Error setting latest lodestone news:", ex);
         return false;
