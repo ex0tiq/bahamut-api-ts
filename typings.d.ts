@@ -100,14 +100,12 @@ export interface LodestoneNewsData {
 export interface GlobalGuildSettings extends Partial<GuildSettings> {
     lastFashionReport: string;
     lastFashionReportDate: string;
-    lastLodestonePosts: {
-        topics: string;
-        notices: string;
-        maintenance: string;
-        updates: string;
-        status: string;
-        developers: string;
-    }
+    lastLodestoneTopic: string;
+    lastLodestoneNotice: string;
+    lastLodestoneMaintenance: string;
+    lastLodestoneUpdate: string;
+    lastLodestoneStatus: string;
+    lastLodestoneDeveloper: string;
 }
 
 export interface GlobalConfig {
