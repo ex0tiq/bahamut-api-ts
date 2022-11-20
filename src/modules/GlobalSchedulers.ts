@@ -88,7 +88,7 @@ export default class GlobalSchedulers {
         });
 
         // Reddit fashion report task
-        this._scheduler.scheduleJob("*/2 * * * *", async () => {
+        this._scheduler.scheduleJob("0,30 * * * *", async () => {
             try {
                 logger.log("Running fashion report scheduler.");
 
@@ -98,7 +98,7 @@ export default class GlobalSchedulers {
                 let res = await axios.request({
                     url: "https://reddit.com/r/ffxiv/search.json",
                     params: {
-                        "q": "author:kaiyoko title:Fashion Report - Full Details",
+                        "q": "author:kaiyoko title:\"Fashion Report - Full Details\"",
                         "sort": "new",
                         "limit": 3,
                     },
@@ -147,6 +147,70 @@ export default class GlobalSchedulers {
                 // Update last fashion report
                 await this._apiHandler.dbHandler.guildSettings.setDBGuildSetting("global", "lastFashionReport", res[0].id, "string");
                 if (Array.isArray(date) && date.length > 0) await this._apiHandler.dbHandler.guildSettings.setDBGuildSetting("global", "lastFashionReportDate", date[0], "string");
+            } catch (ex) {
+                console.error(ex);
+            }
+        });
+
+        this._scheduler.scheduleJob("15,45 * * * *", async () => {
+            try {
+                logger.log("Running island sanctuary news scheduler.");
+
+                const settings: GlobalGuildSettings | null = <GlobalGuildSettings | null>await this._apiHandler.dbHandler.guildSettings.getDBGuildSettings("global");
+                if (!settings) return null;
+
+                let res = await axios.request({
+                    url: "https://reddit.com/r/ffxiv/search.json",
+                    params: {
+                        "q": "author:Sewer-Rat title:\"Island Sanctuary Workshop - Season\"",
+                        "sort": "new",
+                        "limit": 3,
+                    },
+                });
+
+                if (res && res.data) res = res.data;
+                else return;
+
+                if (res && res.data && res.data.children) res = res.data.children.map((e: { data: any; }) => e.data);
+                else return;
+
+                // Abort if no post found
+                if (!res || !Array.isArray(res) || res.length <= 0) return;
+                // Abort if post title does not match fashion report schema
+                if (!res[0].title.toLowerCase().match(/.*Island Sanctuary Workshop - Season.*/gi)) return;
+                // Abort current check if no new fashion report found
+                if ((res[0] && res[0].id) && (settings && settings.lastIslandNews && settings.lastIslandNews === res[0].id)) return;
+
+                const season = res[0].title.match(/\d{1,2}/);
+
+                if (Array.isArray(season) && season.length > 0 && (settings && settings.lastIslandSeason && settings.lastIslandSeason === season[0])) return;
+                if (settings && settings.lastIslandSeason && (parseInt(season[0]) <= parseInt(settings.lastIslandSeason))) return;
+
+                await this._apiHandler.broadcastHandler.broadcastToAll(async (_client: BahamutClient, obj: any) => {
+                    for (const [, guild] of _client.guilds.cache) {
+                        const { getGuildSettings } = require(obj.rootPath + "/lib/getFunctions");
+
+                        const guild_settings = await getGuildSettings(_client, guild),
+                            { EmbedBuilder } = require("discord.js");
+
+                        if (!guild_settings.ffxiv_island_news_channel || !guild.channels.cache.has(guild_settings.ffxiv_island_news_channel)) continue;
+                        const island_channel = guild.channels.cache.get(guild_settings.ffxiv_island_news_channel);
+
+                        if (obj.post) {
+                            // @ts-ignore
+                            await island_channel!.send({ embeds: [(new EmbedBuilder()
+                                        .setTitle(obj.post.title)
+                                        .setColor(_client.bahamut.config.primary_message_color)
+                                        .setDescription(obj.post.selftext.includes("FAQ") ? `${obj.post.selftext.split("\n\n# FAQ")[0]}` : `${obj.post.selftext.substring(0, 500)}...`)
+                                        .setURL("https://reddit.com" + obj.post.permalink)
+                                )] });
+                        }
+                    }
+                }, false, { post: res[0] });
+
+                // Update last island news
+                await this._apiHandler.dbHandler.guildSettings.setDBGuildSetting("global", "lastIslandNews", res[0].id, "string");
+                if (Array.isArray(season) && season.length > 0) await this._apiHandler.dbHandler.guildSettings.setDBGuildSetting("global", "lastIslandSeason", season[0], "string");
             } catch (ex) {
                 console.error(ex);
             }

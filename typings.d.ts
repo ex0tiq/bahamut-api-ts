@@ -106,6 +106,8 @@ export interface GlobalGuildSettings extends Partial<GuildSettings> {
     lastLodestoneUpdate: string;
     lastLodestoneStatus: string;
     lastLodestoneDeveloper: string;
+    lastIslandNews: string;
+    lastIslandSeason: string;
 }
 
 export interface GlobalConfig {
