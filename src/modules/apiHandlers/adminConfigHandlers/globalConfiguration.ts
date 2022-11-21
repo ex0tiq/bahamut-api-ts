@@ -13,8 +13,7 @@ export default(apiHandler: APIHandler) => {
             return;
         }
 
-        const globalConfig = require("../../config/global_config.json") || {};
-        if (!await (isUserBotAdmin(apiHandler, <string>req.query.user, { ...globalConfig }))) {
+        if (!await (isUserBotAdmin(apiHandler, <string>req.query.user))) {
             res.status(403);
             res.end(JSON.stringify({
                 status: "error",
@@ -28,7 +27,7 @@ export default(apiHandler: APIHandler) => {
 
         if ((<string>req.query.action).toLowerCase() === "get") {
             // eslint-disable-next-line no-unused-vars
-            result = globalConfig;
+            result = apiHandler.manager.globalConfig;
         }
 
         res.end(JSON.stringify({
