@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { GuildSettings } from "bahamutbot";
 
 export interface ShardingServerConfig {
