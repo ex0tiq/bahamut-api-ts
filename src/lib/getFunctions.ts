@@ -8,6 +8,7 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
         const lastLodestoneUpdates = await axios("https://lodestonenews.com/news/all?limit=10", {
                 method: "GET",
                 timeout: 3000,
+                responseType: "json",
             }),
             entries: LodestoneNewsData | null = lastLodestoneUpdates.data || null,
             entriesToPost: {
