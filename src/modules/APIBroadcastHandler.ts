@@ -44,8 +44,6 @@ export default class APIBroadcastHandler {
                     const resObj = resp.data.result;
                     if (includeServerObject) resObj.server = srv;
                     temp.push(resObj);
-                    // if (Array.isArray(resp.data.result)) temp.push(resp.data.result[0]);
-                    // else temp.push(resp.data.result);
                 }
             } catch (ex) {
                 console.error(ex);
@@ -93,8 +91,6 @@ export default class APIBroadcastHandler {
                         const resObj = resp.data.result;
                         if (includeServerObject) resObj.server = srv;
                         temp.push(resObj);
-                        // if (Array.isArray(resp.data.result)) temp.push(resp.data.result[0]);
-                        // else temp.push(resp.data.result);
                     }
                 } catch (ex) {
                     console.error(ex);
@@ -143,8 +139,6 @@ export default class APIBroadcastHandler {
                         const resObj = resp.data.result;
                         if (includeServerObject) resObj.server = srv;
                         temp.push(resObj);
-                        // if (Array.isArray(resp.data.result)) temp.push(resp.data.result[0]);
-                        // else temp.push(resp.data.result);
                     }
                 } catch (ex) {
                     console.error(ex);
@@ -177,16 +171,15 @@ export default class APIBroadcastHandler {
                     timeout: 10000,
                 });
 
-                if (resp) {
-                    if (Array.isArray(resp)) temp.push(resp[0]);
-                    else temp.push(resp);
+                if (resp && resp.data) {
+                    temp.push(resp.data.result);
                 }
             } catch (ex) {
                 console.error(ex);
             }
         }
 
-        return (serverId ? temp[0] : temp);
+        return temp;
     };
 
     getLowestLatencyServer = () => {
