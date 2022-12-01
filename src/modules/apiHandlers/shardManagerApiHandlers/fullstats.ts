@@ -49,7 +49,7 @@ export default (apiHandler: APIHandler) => {
 
         for (const t of temp) {
             const server = fromObject(t.server, ["managedGuilds", "managedShards", "ip", "port", "communication_token"]);
-            let tmp = { data: { result: null } };
+            let tmp = [];
 
             if (detailed) {
                 tmp = (await apiHandler.manager.broadcastHandler.broadcastToShardman(async () => {
@@ -61,12 +61,14 @@ export default (apiHandler: APIHandler) => {
                         "ramUsed": mem.usedMemMb,
                         "ramTotal": mem.totalMemMb,
                     };
-                }, t.server.id));
+                }, t.server.id)).flat();
             }
+
+            tmp = tmp[0];
 
             const data = {
                 // eslint-disable-next-line no-unused-vars
-                server: ((tmp && tmp.data && tmp.data.result) ? Object.assign(server, tmp.data.result) : server),
+                server: (tmp ? Object.assign(server, tmp) : server),
                 localTime: t.timeInfo.localTime,
                 startupTime: t.timeInfo.startupTime,
                 shards: t.origResult,
