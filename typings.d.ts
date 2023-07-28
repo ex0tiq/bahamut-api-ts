@@ -30,7 +30,7 @@ export interface APIConfig {
         "clientId": string;
         "clientSecret": string;
         "signingSecret": string
-    }
+    },
 }
 
 export interface ManagedGuild {
@@ -144,4 +144,12 @@ export interface GlobalConfig {
     website_link: string;
     xivapi_token: string;
     youtube_token: string;
+    config_types: any;
+    defaultSettings: any; 
+}
+
+export interface GlobalBootConfig extends GlobalConfig {
+    token?: string;
+    test_token?: string;
+    prod_token?: string;
 }
