@@ -6,4 +6,4 @@
 Bahamut Bot API is the centralized control instance that manages every node of the bot.
 
 ### To-Do
-- Time will tell...
+- 
