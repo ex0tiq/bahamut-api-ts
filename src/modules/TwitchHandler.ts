@@ -1,11 +1,12 @@
 /* eslint-disable no-undef */
-import { ClientCredentialsAuthProvider } from "@twurple/auth";
+import { AppTokenAuthProvider  } from "@twurple/auth";
 import { ApiClient } from "@twurple/api";
-import { EventSubMiddleware, EventSubStreamOnlineEvent, EventSubSubscription } from "@twurple/eventsub";
-import logger from "./Logger";
-import { BahamutAPIHandler } from "../index";
+import { EventSubMiddleware } from "@twurple/eventsub-http";
+import { EventSubStreamOnlineEvent, EventSubSubscription } from "@twurple/eventsub-base"
+import logger from "./Logger.js";
+import { BahamutAPIHandler } from "../index.js";
 import { Express } from "express";
-import BahamutClient from "bahamutbot/src/modules/BahamutClient";
+import BahamutClient from "bahamutbot/src/modules/BahamutClient.js";
 
 export default class TwitchHandler {
     private _apiManager;
@@ -23,10 +24,10 @@ export default class TwitchHandler {
         this._apiManager = _apiManager;
 
         if (_apiManager.config.twitch && _apiManager.config.twitch.clientId && _apiManager.config.twitch.clientSecret && _apiManager.config.twitch.signingSecret) {
-            this.authProvider = new ClientCredentialsAuthProvider(_apiManager.config.twitch.clientId, _apiManager.config.twitch.clientSecret);
+            this.authProvider = new AppTokenAuthProvider(_apiManager.config.twitch.clientId, _apiManager.config.twitch.clientSecret);
             this.apiClient = new ApiClient({ authProvider: this.authProvider });
             this.signingSecret = _apiManager.config.twitch.signingSecret;
-        }
+        } 
     }
 
     loadAllTwitchSubscriptions = async () => {
@@ -45,8 +46,10 @@ export default class TwitchHandler {
     };
 
     sendStreamOnlineNotification = async (streamEvent: EventSubStreamOnlineEvent) => {
-        const stream = await streamEvent.getStream(),
-            streamObj = {
+        const stream = await streamEvent.getStream();
+        if (!stream) return;
+        
+        const streamObj = {
             "gameName": stream.gameName,
             "id": stream.id,
             "viewers": stream.viewers,
@@ -65,29 +68,32 @@ export default class TwitchHandler {
         for (const [guild, subs] of Object.entries(this.guild_twitch_subscriptions)) {
             if (subs.includes(streamEvent.broadcasterId)) {
                 await this._apiManager.apiHandler.manager.broadcastHandler.broadcastToGuild(async (_client: BahamutClient, obj: any) => {
-                    const { getGuildSettings } = require(obj.rootPath + "/lib/getFunctions");
+                    const { getGuildSettings } = await import(obj.rootPath + "/lib/getFunctions");
 
                     const settings = await getGuildSettings(_client, _client.guilds.cache.has(obj.guild)!);
                     if (!settings.twitch_notify_channel) return;
 
                     // Handle notify
-                    const { MessageEmbed, Message } = require("discord.js");
-                    const { resolveRole, resolveChannel } = require(obj.rootPath + "/lib/resolveFunctions");
-                    const embed = new MessageEmbed(), msg = new Message(), role = (settings.twitch_notify_role ? (await resolveRole(this, null, settings.twitch_notify_role, false, obj.guild)) : null),
+                    const { EmbedBuilder } = await import("discord.js");
+                    const { resolveRole, resolveChannel } = await import(obj.rootPath + "/lib/resolveFunctions.js");
+                    const embed = new EmbedBuilder(), role = (settings.twitch_notify_role ? (await resolveRole(this, null, settings.twitch_notify_role, false, obj.guild)) : null),
                         channel = await resolveChannel(this, null, settings.twitch_notify_channel, false, obj.guild);
 
+                        // @ts-ignore
                     embed.setColor(_client.bahamut.config.primary_message_color);
                     embed.setDescription(`[${obj.stream.title}](https://twitch.tv/${obj.streamer.name})`);
                     embed.setAuthor({ name: obj.streamer.displayName, iconURL: obj.streamer.thumbnailUrl });
-                    embed.addField("Game", obj.stream.gameName);
-                    embed.addField("Viewers", obj.stream.viewers);
+                    embed.addFields([
+                        { name: "Game", value: obj.stream.gameName },
+                        { name: "Viewers", value: obj.stream.viewers }
+                    ]);
                     embed.setThumbnail(obj.streamer.thumbnailUrl);
                     embed.setImage(obj.stream.thumbnailUrl);
 
-                    msg.content = `${role ? `${role} ` : ""}${settings.twitch_notify_text}`;
-                    msg.embeds = [embed];
-
-                    await channel.send(msg);
+                    await channel.send({
+                        content: `${role ? `${role} ` : ""}${settings.twitch_notify_text}`,
+                        embeds: [embed]
+                    });
                 }, guild, false, { streamer: streamerObj, stream: streamObj });
             }
         }
@@ -131,7 +137,7 @@ export default class TwitchHandler {
             apiClient: this.apiClient!,
             hostName: this._apiManager.config.hostname,
             pathPrefix: "/twitch/events",
-            secret: this.signingSecret,
+            secret: this.signingSecret!,
         });
 
         await this.middleware.apply(srv);
@@ -150,7 +156,7 @@ export default class TwitchHandler {
 
     addTwitchStreamOnlineEventSub = async (userId: string, guildId = null) => {
         try {
-            if (!Object.hasOwnProperty.call(this.twitch_eventsubs, userId)) this.twitch_eventsubs[`${userId}`] = await this.middleware!.subscribeToStreamOnlineEvents(userId, event => this.sendStreamOnlineNotification(event));
+            if (!Object.hasOwnProperty.call(this.twitch_eventsubs, userId)) this.twitch_eventsubs[`${userId}`] = await this.middleware!.onStreamOnline(userId, event => this.sendStreamOnlineNotification(event));
             if (!guildId) return true;
 
             if (!Object.hasOwnProperty.call(this.guild_twitch_subscriptions, guildId) || !this.guild_twitch_subscriptions[guildId].includes(userId)) {

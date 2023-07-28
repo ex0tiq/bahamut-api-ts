@@ -1,5 +1,5 @@
-import { isUserBotAdmin } from "../../../lib/isFunctions";
-import APIHandler from "../../APIHandler";
+import { isUserBotAdmin } from "../../../lib/isFunctions.js";
+import APIHandler from "../../APIHandler.js";
 
 export default (apiHandler: APIHandler) => {
     apiHandler.srv.get("/admin/guildOverview", async (req, res) => {

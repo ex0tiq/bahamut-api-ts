@@ -1,7 +1,7 @@
-import APIHandler from "../../APIHandler";
-import { parseBool } from "../../../lib/parseFunctions";
-import BahamutClient from "bahamutbot/src/modules/BahamutClient";
-import { checkGuildChannelPermissions, checkGuildPermissions } from "../../../lib/checkFunctions";
+import APIHandler from "../../APIHandler.js";
+import { parseBool } from "../../../lib/parseFunctions.js";
+import BahamutClient from "bahamutbot/src/modules/BahamutClient.js";
+import { checkGuildChannelPermissions, checkGuildPermissions } from "../../../lib/checkFunctions.js";
 
 export default (apiHandler: APIHandler) => {
     apiHandler.srv.get("/guilds", async (req, res) => {

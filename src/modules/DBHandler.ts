@@ -1,5 +1,5 @@
-import logger from "./Logger";
-import { BahamutAPIHandler } from "../index";
+import logger from "./Logger.js";
+import { BahamutAPIHandler } from "../index.js";
 import {
     CreationOptional,
     DataTypes,
@@ -9,10 +9,10 @@ import {
     QueryTypes,
     Sequelize,
 } from "sequelize";
-import GuildSettingsHandler from "./databaseHandler/guildSettingsHandler";
-import GuildUserStatHandler from "./databaseHandler/guildUserStatHandler";
-import CommandLogHandler from "./databaseHandler/commandLogHandler";
-import ConfigHandler from "./databaseHandler/configHandler";
+import GuildSettingsHandler from "./databaseHandler/guildSettingsHandler.js";
+import GuildUserStatHandler from "./databaseHandler/guildUserStatHandler.js";
+import CommandLogHandler from "./databaseHandler/commandLogHandler.js";
+import ConfigHandler from "./databaseHandler/configHandler.js";
 
 export default class DBHandler {
     private _apiManager: BahamutAPIHandler;

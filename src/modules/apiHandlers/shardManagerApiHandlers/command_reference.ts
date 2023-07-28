@@ -1,4 +1,4 @@
-import APIHandler from "../../APIHandler";
+import APIHandler from "../../APIHandler.js";
 
 export default (apiHandler: APIHandler) => {
     apiHandler.srv.get("/command_reference", async (req, res) => {
@@ -13,7 +13,7 @@ export default (apiHandler: APIHandler) => {
 /*
     this.getCommandReference = async () => {
         let data = (await apiHandler.broadcastToShard(() => {
-            const slugify = require("slugify");
+            const slugify = await import("slugify");
 
             const categories = Array.from(this.cmdHandler.categories.keys()),
                 help = {};

@@ -1,9 +1,9 @@
-import { isInt, isJson } from "../../lib/validateFunctions";
-import { parseBool } from "../../lib/parseFunctions";
-import DBHandler, { DBGuildSettings } from "../DBHandler";
+import { isInt, isJson } from "../../lib/validateFunctions.js";
+import { parseBool } from "../../lib/parseFunctions.js";
+import DBHandler, { DBGuildSettings } from "../DBHandler.js";
 import { WhereOptions } from "sequelize";
 import { GuildSettings } from "bahamutbot";
-import { GlobalGuildSettings } from "../../../typings";
+import { GlobalGuildSettings } from "../../../typings.js";
 
 export default class GuildSettingsHandler {
     // DB Handler instance
@@ -60,7 +60,7 @@ export default class GuildSettingsHandler {
             return new Map(Object.entries(obj));
         } catch (error) {
             console.error("An error occured while querying guild settings:", error);
-            return this._dbHandler.manager.config.defaultSettings;
+            return this._dbHandler.manager.globalConfig.defaultSettings;
         }
     };
 
@@ -122,17 +122,17 @@ export default class GuildSettingsHandler {
             });
 
             return {
-                ...this._dbHandler.manager.config.defaultSettings,
+                ...this._dbHandler.manager.globalConfig.defaultSettings,
                 ...(Object.assign({}, ...mappedSettings) as GuildSettings),
             };
         } catch (error) {
             console.error("An error occured while querying guild settings:", error);
-            return this._dbHandler.manager.config.defaultSettings;
+            return this._dbHandler.manager.globalConfig.defaultSettings;
         }
     };
 
     setDBGuildSetting = async (guild: string, setting: string, value: any, value_type?: string): Promise<boolean> => {
-        const types = this._dbHandler.manager.config.config_types, type = (value_type ?? (types[setting] || "string"));
+        const types = this._dbHandler.manager.globalConfig.config_types, type = (value_type ?? (types[setting] || "string"));
 
         return new Promise((resolve) => {
             return DBGuildSettings

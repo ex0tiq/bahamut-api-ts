@@ -1,4 +1,4 @@
-import { BahamutAPIHandler } from "../index";
+import { BahamutAPIHandler } from "../index.js";
 
 const setLatestLodestoneNews = async (manager: BahamutAPIHandler, latestTopic?: string,
                                       latestNotice?: string,

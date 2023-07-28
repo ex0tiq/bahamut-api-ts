@@ -1,6 +1,6 @@
-import DBHandler, { DBServerConfig } from "../DBHandler";
-import { isInt, isJson } from "../../lib/validateFunctions";
-import { parseBool } from "../../lib/parseFunctions";
+import DBHandler, { DBServerConfig } from "../DBHandler.js";
+import { isInt, isJson } from "../../lib/validateFunctions.js";
+import { parseBool } from "../../lib/parseFunctions.js";
 
 export default class ConfigHandler {
 // DB Handler instance
@@ -51,7 +51,7 @@ export default class ConfigHandler {
             return mappedSettings;
         } catch (error) {
             console.error("An error occured while querying server settings:", error);
-            return this._dbHandler.manager.config.defaultSettings;
+            return this._dbHandler.manager.globalConfig.defaultSettings;
         }
     };
 }

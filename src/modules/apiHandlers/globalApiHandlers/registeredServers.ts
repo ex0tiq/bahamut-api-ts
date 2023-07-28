@@ -1,5 +1,5 @@
-import { groupBy } from "../../../lib/toolFunctions";
-import APIHandler from "../../APIHandler";
+import { groupBy } from "../../../lib/toolFunctions.js";
+import APIHandler from "../../APIHandler.js";
 
 export default (apiHandler: APIHandler) => {
     apiHandler.srv.get("/registeredServers", async (req, res) => {

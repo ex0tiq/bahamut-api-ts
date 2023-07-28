@@ -1,8 +1,8 @@
-import APIHandler from "../../APIHandler";
-import BahamutClient from "bahamutbot/src/modules/BahamutClient";
-import { fromObject, toProperCase } from "../../../lib/toolFunctions";
-import { parseBool } from "../../../lib/parseFunctions";
-import { isBool } from "../../../lib/validateFunctions";
+import APIHandler from "../../APIHandler.js";
+import BahamutClient from "bahamutbot/src/modules/BahamutClient.js";
+import { fromObject, toProperCase } from "../../../lib/toolFunctions.js";
+import { parseBool } from "../../../lib/parseFunctions.js";
+import { isBool } from "../../../lib/validateFunctions.js";
 
 export default (apiHandler: APIHandler) => {
     apiHandler.srv.get("/fullstats", async (req, res) => {
@@ -53,7 +53,7 @@ export default (apiHandler: APIHandler) => {
 
             if (detailed) {
                 tmp = (await apiHandler.manager.broadcastHandler.broadcastToShardman(async () => {
-                    const osu = require("node-os-utils"),
+                    const osu = await import("node-os-utils"),
                         mem = await osu.mem.used();
 
                     return {

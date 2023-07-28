@@ -1,21 +1,24 @@
-import GlobalSchedulers from "./modules/GlobalSchedulers";
+import GlobalSchedulers from "./modules/GlobalSchedulers.js";
 
 process.env.TZ = "UTC";
 
 // Load API Handler
-import APIHandler from "./modules/APIHandler";
-import APIBroadcastHandler from "./modules/APIBroadcastHandler";
-import DBHandler from "./modules/DBHandler";
-import TwitchHandler from "./modules/TwitchHandler";
-import ShardingServer from "./modules/ShardingServer";
+import APIHandler from "./modules/APIHandler.js";
+import APIBroadcastHandler from "./modules/APIBroadcastHandler.js";
+import DBHandler from "./modules/DBHandler.js";
+import TwitchHandler from "./modules/TwitchHandler.js";
+import ShardingServer from "./modules/ShardingServer.js";
+import { readFileSync } from 'fs';
+import { resolve } from "path";
+import { APIConfig, GlobalConfig } from "../typings.js";
 
 // Log startup
 console.log(`Running Bahamut API v${process.env.npm_package_version} on Node ${process.version}.`);
 
 export class BahamutAPIHandler {
     private _startTime = Date.now();
-    private _config = require("../config/api_config.json");
-    private _globalConfig = require("../config/global_config.json");
+    private _config: APIConfig;
+    private _globalConfig: GlobalConfig;
     // Object which contains all registered app servers
     private _registeredShardingServers: Map<string, ShardingServer> = new Map();
     // Contains all managed users
@@ -27,6 +30,13 @@ export class BahamutAPIHandler {
     private readonly _twitchHandler;
 
     constructor() {
+        this._config = JSON.parse(
+            readFileSync(resolve("config/api_config.json"), "utf-8")
+        );
+        this._globalConfig = JSON.parse(
+            readFileSync(resolve("config/global_config.json"), "utf-8")
+        );
+
         // Init db
         this._dbHandler = new DBHandler(this);
         this._dbHandler.dbInit();

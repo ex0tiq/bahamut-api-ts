@@ -1,13 +1,20 @@
-import APIHandler from "../modules/APIHandler";
+import { GlobalBootConfig } from "../../typings.js";
+import APIHandler from "../modules/APIHandler.js";
+import { readFileSync } from 'fs';
+import { resolve } from "path";
 
 const getServerBootConfiguration = async (apiHandler: APIHandler, serverRegisterToken: string) => {
     const serverConfig = await apiHandler.manager.dbHandler.config.getDBServerConfig(serverRegisterToken),
-        config_types = require("../../config/config_types.json"),
-        defaultBotSettings = require("../../config/defaultBotSettings.json");
+        config_types = JSON.parse(
+            readFileSync(resolve("config/config_types.json"), "utf-8")
+        ),
+        defaultBotSettings = JSON.parse(
+            readFileSync(resolve("config/defaultBotSettings.json"), "utf-8")
+        );
 
-    const config = { ...apiHandler.manager.globalConfig };
+    const config: GlobalBootConfig = { ...apiHandler.manager.globalConfig };
 
-    // serverConfig.testMode = true;
+    serverConfig.testMode = true;
 
     if (serverConfig.testMode) config.token = apiHandler.manager.globalConfig.test_token;
     else config.token = apiHandler.manager.globalConfig.prod_token;
@@ -17,7 +24,7 @@ const getServerBootConfiguration = async (apiHandler: APIHandler, serverRegister
 
     // Overwrite global config with per server settings
     for (const [key, val] of Object.entries(serverConfig)) {
-        config[key] = val;
+        config[key as keyof GlobalBootConfig] = val;
     }
 
     config["config_types"] = config_types;

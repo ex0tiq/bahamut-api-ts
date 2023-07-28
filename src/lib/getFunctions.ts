@@ -1,6 +1,6 @@
 import axios from "axios";
-import { BahamutAPIHandler } from "../index";
-import { GlobalGuildSettings, LodestoneNewsData } from "../../typings";
+import { BahamutAPIHandler } from "../index.js";
+import { GlobalGuildSettings, LodestoneNewsData } from "../../typings.js";
 import { EmbedBuilder } from "discord.js";
 
 const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
@@ -45,6 +45,7 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
                     time: e.time,
                     embed: new EmbedBuilder()
                         .setAuthor({ name: "Topics", iconURL: "https://teraflare.app/assets/bot_assets/lodestone-images/topics.png" })
+                        // @ts-ignore
                         .setColor(manager.globalConfig.primary_message_color)
                         .setTitle(e.title)
                         .setURL(e.url)
@@ -65,6 +66,7 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
                     time: e.time,
                     embed: new EmbedBuilder()
                         .setAuthor({ name: "Notices", iconURL: "https://teraflare.app/assets/bot_assets/lodestone-images/notices.png" })
+                        // @ts-ignore
                         .setColor(manager.globalConfig.primary_message_color)
                         .setTitle(e.title)
                         .setURL(e.url)
@@ -85,6 +87,7 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
                     end: e.end,
                     embed: new EmbedBuilder()
                         .setAuthor({ name: "Maintenance", iconURL: "https://teraflare.app/assets/bot_assets/lodestone-images/maintenance.png" })
+                        // @ts-ignore
                         .setColor(manager.globalConfig.primary_message_color)
                         .setTitle(e.title)
                         .toJSON(),
@@ -102,6 +105,7 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
                     time: e.time,
                     embed: new EmbedBuilder()
                         .setAuthor({ name: "Updates", iconURL: "https://teraflare.app/assets/bot_assets/lodestone-images/updates.png" })
+                        // @ts-ignore
                         .setColor(manager.globalConfig.primary_message_color)
                         .setTitle(e.title)
                         .setURL(e.url)
@@ -120,6 +124,7 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
                     time: e.time,
                     embed: new EmbedBuilder()
                         .setAuthor({ name: "Status", iconURL: "https://teraflare.app/assets/bot_assets/lodestone-images/status.png" })
+                        // @ts-ignore
                         .setColor(manager.globalConfig.primary_message_color)
                         .setTitle(e.title)
                         .setURL(e.url)
@@ -138,6 +143,7 @@ const getLatestLodestoneNews = async (manager: BahamutAPIHandler) => {
                     time: e.time,
                     embed: new EmbedBuilder()
                         .setAuthor({ name: "Developer's Blog", iconURL: "https://teraflare.app/assets/bot_assets/lodestone-images/developers.png" })
+                        // @ts-ignore
                         .setColor(manager.globalConfig.primary_message_color)
                         .setTitle(e.title)
                         .setURL(e.url)

@@ -1,5 +1,5 @@
-import APIHandler from "../../APIHandler";
-import BahamutClient from "bahamutbot/src/modules/BahamutClient";
+import APIHandler from "../../APIHandler.js";
+import BahamutClient from "bahamutbot/src/modules/BahamutClient.js";
 
 export default (apiHandler: APIHandler) => {
     apiHandler.srv.get("/shards", async (req, res) => {

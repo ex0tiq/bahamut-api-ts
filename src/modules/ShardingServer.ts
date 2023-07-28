@@ -1,5 +1,5 @@
-import { ManagedGuild, ManagedShard, ShardingServerConfig } from "../../typings";
-import { toProperCase } from "../lib/toolFunctions";
+import { ManagedGuild, ManagedShard, ShardingServerConfig } from "../../typings.js";
+import { toProperCase } from "../lib/toolFunctions.js";
 
 export default class ShardingServer {
     readonly id: string;

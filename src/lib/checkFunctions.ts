@@ -1,5 +1,5 @@
-import APIHandler from "../modules/APIHandler";
-import BahamutClient from "bahamutbot/src/modules/BahamutClient";
+import APIHandler from "../modules/APIHandler.js";
+import BahamutClient from "bahamutbot/src/modules/BahamutClient.js";
 import Discord from "discord.js";
 
 const GuildChannelPermission: { [key: string]: string } = {
@@ -58,11 +58,11 @@ const checkGuildChannelPermissions = async (apiHandler: APIHandler, guild: strin
         });
     }
 
-    const permResults = await apiHandler.manager.broadcastHandler.broadcastToGuild((_client: BahamutClient, obj: any) => {
+    const permResults = await apiHandler.manager.broadcastHandler.broadcastToGuild(async (_client: BahamutClient, obj: any) => {
         if (!obj.channelToCheck || !obj.permissionsToCheck) return null;
 
         // eslint-disable-next-line no-shadow
-        const Discord = require("discord.js");
+        const Discord = await import("discord.js");
 
         // eslint-disable-next-line no-shadow
         let channel = _client.channels.cache.get(obj.channelToCheck);

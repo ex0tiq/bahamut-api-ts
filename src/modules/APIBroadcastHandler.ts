@@ -1,7 +1,7 @@
 import axios from "axios";
-import { ManagedGuild } from "../../typings";
-import { BahamutAPIHandler } from "../index";
-import ShardingServer from "./ShardingServer";
+import { ManagedGuild } from "../../typings.js";
+import { BahamutAPIHandler } from "../index.js";
+import ShardingServer from "./ShardingServer.js";
 import { BahamutShardingBootManager } from "bahamutbot";
 
 export default class APIBroadcastHandler {

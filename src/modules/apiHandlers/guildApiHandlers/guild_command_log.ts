@@ -1,5 +1,5 @@
-import APIHandler from "../../APIHandler";
-import { isNumeric } from "../../../lib/validateFunctions";
+import APIHandler from "../../APIHandler.js";
+import { isNumeric } from "../../../lib/validateFunctions.js";
 
 export default (apiHandler: APIHandler) => {
     apiHandler.srv.get("/guild_command_logs", async (req, res) => {

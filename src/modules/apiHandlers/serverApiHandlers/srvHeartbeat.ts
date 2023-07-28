@@ -1,8 +1,8 @@
-import logger from "../../Logger";
-import { getServerBootConfiguration } from "../../../lib/bootConfigurationFunctions";
-import { isUUID } from "../../../lib/validateFunctions";
-import ShardingServer from "../../ShardingServer";
-import APIHandler from "../../APIHandler";
+import logger from "../../Logger.js";
+import { getServerBootConfiguration } from "../../../lib/bootConfigurationFunctions.js";
+import { isUUID } from "../../../lib/validateFunctions.js";
+import ShardingServer from "../../ShardingServer.js";
+import APIHandler from "../../APIHandler.js";
 
 export default (apiHandler: APIHandler) => {
     apiHandler.srv.post("/srvHeartbeat", async (req, res) => {
@@ -16,7 +16,7 @@ export default (apiHandler: APIHandler) => {
             }));
             return;
         }
-        if (!apiHandler.manager.config.register_tokens.includes(req.query.registerToken)) {
+        if (!apiHandler.manager.config.register_tokens.includes(req.query.registerToken as string)) {
             res.status(403);
             res.end(JSON.stringify({
                 status: "error",

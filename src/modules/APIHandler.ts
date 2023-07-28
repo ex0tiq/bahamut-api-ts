@@ -1,14 +1,23 @@
 import express from "express";
-import logger from "./Logger";
+import logger from "./Logger.js";
 import rateLimit from "express-rate-limit";
 import { promisify } from "util";
-import { BahamutAPIHandler } from "../index";
+import { BahamutAPIHandler } from "../index.js";
+import helmet from "helmet";
+// @ts-ignore
+import recurse from "recursive-readdir";
+// @ts-ignore
+import expressDefend from "express-defend";
 
-const recursive = promisify(require("recursive-readdir"));
-const expressDefend = require("express-defend");
+import url from "url";
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+
+const recursive = promisify(recurse);
 const limiter = rateLimit({
-    windowMs: 5 * 60 * 1000,
-    max: 1000,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 1000, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 const defend = expressDefend.protect({
     maxAttempts: 3,
@@ -16,7 +25,7 @@ const defend = expressDefend.protect({
     consoleLogging: true,
     logFile: "suspicious.log",
     onMaxAttemptsReached: function(ipAddress: string, url: string) {
-        console.log("IP address " + ipAddress + " is considered to be malicious, URL: " + url);
+        logger.warn("[API] IP address " + ipAddress + " is considered to be malicious, URL: " + url);
     },
 });
 
@@ -34,7 +43,9 @@ export default class APIHandler {
         this._apiManager = apiManager;
 
         // Interpret x-forwarded-for header
-        this._srv.set("trust proxy", true);
+        this._srv.set("trust proxy", 1);
+        // Init helmet
+        this._srv.use(helmet());
         // Rate limit
         this._srv.use(limiter);
         // Defend

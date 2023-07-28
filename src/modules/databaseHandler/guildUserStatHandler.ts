@@ -1,5 +1,5 @@
 import { Op, WhereOptions } from "sequelize";
-import DBHandler, { DBGuildUserStats } from "../DBHandler";
+import DBHandler, { DBGuildUserStats } from "../DBHandler.js";
 
 export default class GuildUserStatHandler {
     // DB Handler instance
