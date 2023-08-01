@@ -189,7 +189,7 @@ export default class GlobalSchedulers {
 
                 await this._apiHandler.broadcastHandler.broadcastToAll(async (_client: BahamutClient, obj: any) => {
                     for (const [, guild] of _client.guilds.cache) {
-                        const { getGuildSettings } = await import(obj.rootPath + "/lib/getFunctions");
+                        const { getGuildSettings } = await import(obj.rootPath + "/lib/getFunctions.js");
 
                         const guild_settings = await getGuildSettings(_client, guild),
                             { EmbedBuilder } = await import("discord.js");
