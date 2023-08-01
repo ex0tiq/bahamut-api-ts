@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-import { AppTokenAuthProvider  } from "@twurple/auth";
+import { AppTokenAuthProvider } from "@twurple/auth";
 import { ApiClient } from "@twurple/api";
 import { EventSubMiddleware } from "@twurple/eventsub-http";
-import { EventSubStreamOnlineEvent, EventSubSubscription } from "@twurple/eventsub-base"
+import { EventSubStreamOnlineEvent, EventSubSubscription } from "@twurple/eventsub-base";
 import logger from "./Logger.js";
 import { BahamutAPIHandler } from "../index.js";
 import { Express } from "express";
@@ -68,7 +68,7 @@ export default class TwitchHandler {
         for (const [guild, subs] of Object.entries(this.guild_twitch_subscriptions)) {
             if (subs.includes(streamEvent.broadcasterId)) {
                 await this._apiManager.apiHandler.manager.broadcastHandler.broadcastToGuild(async (_client: BahamutClient, obj: any) => {
-                    const { getGuildSettings } = await import(obj.rootPath + "/lib/getFunctions");
+                    const { getGuildSettings } = await import(obj.rootPath + "/lib/getFunctions.js");
 
                     const settings = await getGuildSettings(_client, _client.guilds.cache.has(obj.guild)!);
                     if (!settings.twitch_notify_channel) return;
@@ -85,14 +85,14 @@ export default class TwitchHandler {
                     embed.setAuthor({ name: obj.streamer.displayName, iconURL: obj.streamer.thumbnailUrl });
                     embed.addFields([
                         { name: "Game", value: obj.stream.gameName },
-                        { name: "Viewers", value: obj.stream.viewers }
+                        { name: "Viewers", value: obj.stream.viewers },
                     ]);
                     embed.setThumbnail(obj.streamer.thumbnailUrl);
                     embed.setImage(obj.stream.thumbnailUrl);
 
                     await channel.send({
                         content: `${role ? `${role} ` : ""}${settings.twitch_notify_text}`,
-                        embeds: [embed]
+                        embeds: [embed],
                     });
                 }, guild, false, { streamer: streamerObj, stream: streamObj });
             }
